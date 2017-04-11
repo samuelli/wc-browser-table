@@ -1,291 +1,292 @@
-<link rel="import" href="../polymer/polymer.html">
+<template id="wc-browser-table">
+  <style>
+    a {
+      text-decoration: none;
+    }
 
-<dom-module id="wc-browser-table">
-  <template>
-    <style>
-      a {
-        text-decoration: none;
-      }
+    #container {
+      display: flex;
+      flex-direction: column;
+      text-transform: uppercase;
+      padding: 0 24px;
+      color: var(--theme-blue-grey, #697785);
+      font-size: 14px;
+      width: 100%;
+      border-radius: 4px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 1px 4px 0 var(--shadow-color, hsla(0, 0%, 0%, 0.1)), 0 0px 4px 0 var(--shadow-color, hsla(0, 0%, 0%, 0.1));
+    }
 
+    /* Header row */
+
+    .header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ededed;
+    }
+
+    .header .row [label] {
+      display: none;
+    }
+
+    .header .row {
+      flex: 1 0;
+      border-bottom: none;
+    }
+
+    .header h1 {
+      flex: 0 0 170px;
+      text-transform: none;
+      font-size: 24px;
+      font-weight: normal;
+      margin: 0 16px 0 0;
+      color: var(--theme-black, #2D2F31);
+    }
+
+    .header img {
+      width: 24px;
+      margin-right: 8px;
+    }
+
+    /* Spec label */
+
+    div[label] {
+      flex: 0 0 170px;
+      margin-right: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    div[label] svg {
+      width: 26px;
+      margin-right: 8px;
+      fill: var(--theme-blue-grey, #697785);
+    }
+
+    div[label]:after {
+      content: attr(label);
+      display: inline-block;
+    }
+
+    /* Browser row */
+    .row {
+      display: flex;
+      height: 100px;
+      border-bottom: 1px solid #ededed;
+      align-items: center;
+    }
+
+    .row > :not([label]) {
+      flex: 1 1 60px;
+      padding: 8px 0;
+      font-weight: bold;
+    }
+
+    div.header > div.row > div:not([label]), div.row [title] {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+    }
+
+    div:not(.header) > div.row [title]:before {
+      content: '';
+      width: 22px;
+      height: 22px;
+      flex: 0 0 22px;
+      border-radius: 50%;
+      display: inline-block;
+      background-repeat: no-repeat;
+      margin-right: 8px;
+    }
+
+    div:not(.header) > div.row > :not([title]):not([label]) {
+      flex-direction: column;
+    }
+
+    [title="Stable"]:before, [title="Polyfill"]:before {
+      background: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><path fill-rule=%27evenodd%27 fill=%27white%27 d=%27M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z%27></path></svg>"), #8edb69;
+      background-position: 5px 3px;
+    }
+
+
+    [title="Developing"]:before {
+      background: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><circle fill=%27white%27 cx=%2750%%27 cy=%2750%%27 r=%272%27></circle></svg>"), #f5a623;
+    }
+
+    [title="On hold"]:before, [title="Under consideration"]:before {
+      background:  url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><circle fill=%27white%27 cx=%2750%%27 cy=%2750%%27 r=%272%27></circle></svg>"), #aaa;
+    }
+
+    [title="Stable"]:after {
+      color: hsla(101,61%,32%,1);
+      content: 'stable';
+    }
+
+    [title="Polyfill"]:after {
+      color: hsla(101,61%,32%,1);
+      content: 'Polyfill';
+    }
+
+    [title="On hold"]:after {
+      color: hsla(0,0%,46%,1);
+      content: 'on hold';
+    }
+
+    [title="Developing"]:after {
+      color: hsla(37,91%,34%,1);
+      content: 'Developing';
+    }
+
+    [title="Under consideration"]:after {
+      color: hsla(0,0%,46%,1);
+      content: 'Considering';
+    }
+
+    @media (max-width: 900px) {
       #container {
-        display: flex;
-        flex-direction: column;
-        text-transform: uppercase;
-        padding: 0 24px;
-        color: var(--theme-blue-grey, #697785);
-        font-size: 14px;
-        width: 100%;
-        border-radius: 4px;
-        overflow: hidden;
-        background: white;
-        box-shadow: 0 1px 4px 0 var(--shadow-color, hsla(0, 0%, 0%, 0.1)), 0 0px 4px 0 var(--shadow-color, hsla(0, 0%, 0%, 0.1));
+        margin: 0 24px;
+        width: auto;
+      }
+      
+      [title="Stable"]:after,
+      [title="Polyfill"]:after,
+      [title="On hold"]:after,
+      [title="Developing"]:after,
+      [title="Under consideration"]:after {
+        content: none !important;
       }
 
-      /* Header row */
-
-      .header {
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #ededed;
-      }
-
-      .header .row [label] {
+      .header span {
         display: none;
       }
+    }
 
-      .header .row {
-        flex: 1 0;
-        border-bottom: none;
+    @media (max-width: 500px) {
+      .header {
+        flex-direction: column;
       }
 
       .header h1 {
-        flex: 0 0 170px;
-        text-transform: none;
-        font-size: 24px;
-        font-weight: normal;
-        margin: 0 16px 0 0;
-        color: var(--theme-black, #2D2F31);
+        margin-top: 24px;
+        flex-basis: auto;
       }
 
-      .header img {
-        width: 24px;
-        margin-right: 8px;
+      .header .row [label] {
+        display: block;
       }
 
-      /* Spec label */
+      .header .row {
+        width: 100%;
+      }
+
+      .row :last-child {
+        flex: 0 0 30px !important;
+      }
 
       div[label] {
-        flex: 0 0 170px;
-        margin-right: 16px;
-        display: flex;
-        align-items: center;
-      }
-
-      div[label] svg {
-        width: 26px;
-        margin-right: 8px;
-        fill: var(--theme-blue-grey, #697785);
+        flex: 1 0 40px !important;
       }
 
       div[label]:after {
-        content: attr(label);
-        display: inline-block;
+        position: absolute;
+        margin-top: -51px;
+        padding-right: 8px;
+        background: white;
       }
+    }
+  </style>
 
-      /* Browser row */
-      .row {
-        display: flex;
-        height: 100px;
-        border-bottom: 1px solid #ededed;
-        align-items: center;
-      }
-
-      .row > :not([label]) {
-        flex: 1 1 60px;
-        padding: 8px 0;
-        font-weight: bold;
-      }
-
-      div.header > div.row > div:not([label]), div.row [title] {
-        display: flex;
-        align-items: center;
-        margin: 8px 0;
-      }
-
-      div:not(.header) > div.row [title]:before {
-        content: '';
-        width: 22px;
-        height: 22px;
-        flex: 0 0 22px;
-        border-radius: 50%;
-        display: inline-block;
-        background-repeat: no-repeat;
-        margin-right: 8px;
-      }
-
-      div:not(.header) > div.row > :not([title]):not([label]) {
-        flex-direction: column;
-      }
-
-      [title="Stable"]:before, [title="Polyfill"]:before {
-        background: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><path fill-rule=%27evenodd%27 fill=%27white%27 d=%27M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z%27></path></svg>"), #8edb69;
-        background-position: 5px 3px;
-      }
-
-
-      [title="Developing"]:before {
-        background: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><circle fill=%27white%27 cx=%2750%%27 cy=%2750%%27 r=%272%27></circle></svg>"), #f5a623;
-      }
-
-      [title="On hold"]:before, [title="Under consideration"]:before {
-        background:  url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 22 22%27 version=%271.1%27 aria-hidden=%27true%27><circle fill=%27white%27 cx=%2750%%27 cy=%2750%%27 r=%272%27></circle></svg>"), #aaa;
-      }
-
-      [title="Stable"]:after {
-        color: hsla(101,61%,32%,1);
-        content: 'stable';
-      }
-
-      [title="Polyfill"]:after {
-        color: hsla(101,61%,32%,1);
-        content: 'Polyfill';
-      }
-
-      [title="On hold"]:after {
-        color: hsla(0,0%,46%,1);
-        content: 'on hold';
-      }
-
-      [title="Developing"]:after {
-        color: hsla(37,91%,34%,1);
-        content: 'Developing';
-      }
-
-      [title="Under consideration"]:after {
-        color: hsla(0,0%,46%,1);
-        content: 'Considering';
-      }
-
-      @media (max-width: 900px) {
-        #container {
-          margin: 0 24px;
-          width: auto;
-        }
-        
-        [title="Stable"]:after,
-        [title="Polyfill"]:after,
-        [title="On hold"]:after,
-        [title="Developing"]:after,
-        [title="Under consideration"]:after {
-          content: none !important;
-        }
-
-        .header span {
-          display: none;
-        }
-      }
-
-      @media (max-width: 500px) {
-        .header {
-          flex-direction: column;
-        }
-
-        .header h1 {
-          margin-top: 24px;
-          flex-basis: auto;
-        }
-
-        .header .row [label] {
-          display: block;
-        }
-
-        .header .row {
-          width: 100%;
-        }
-
-        .row :last-child {
-          flex: 0 0 30px !important;
-        }
-
-        div[label] {
-          flex: 1 0 40px !important;
-        }
-
-        div[label]:after {
-          position: absolute;
-          margin-top: -51px;
-          padding-right: 8px;
-          background: white;
-        }
-      }
-    </style>
-
-    <div id="container">
-      <div class="header">
-        <h1 label>Browser support</h1>
-        <div class="row">
-          <div label=""></div>
-          <div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Google_Chrome_for_Android_Icon_2016.svg/48px-Google_Chrome_for_Android_Icon_2016.svg.png">
-            <span>Chrome</span>
-          </div>
-          <div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/48px-Opera_2015_icon.svg.png">
-            <span>Opera</span>
-          </div>
-          <div>
-            <img src="https://upload.wikimedia.org/wikipedia/en/6/61/Apple_Safari.png">
-            <span>Safari</span>
-          </div>
-          <div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Mozilla_Firefox_logo_2013.svg/48px-Mozilla_Firefox_logo_2013.svg.png">
-            <span>Firefox</span>
-          </div>
-          <div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Microsoft_Edge_logo.svg/48px-Microsoft_Edge_logo.svg.png">
-            <span>Edge</span>
-          </div>
+  <div id="container">
+    <div class="header">
+      <h1 label>Browser support</h1>
+      <div class="row">
+        <div label=""></div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Google_Chrome_for_Android_Icon_2016.svg/48px-Google_Chrome_for_Android_Icon_2016.svg.png">
+          <span>Chrome</span>
+        </div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/48px-Opera_2015_icon.svg.png">
+          <span>Opera</span>
+        </div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/en/6/61/Apple_Safari.png">
+          <span>Safari</span>
+        </div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Mozilla_Firefox_logo_2013.svg/48px-Mozilla_Firefox_logo_2013.svg.png">
+          <span>Firefox</span>
+        </div>
+        <div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Microsoft_Edge_logo.svg/48px-Microsoft_Edge_logo.svg.png">
+          <span>Edge</span>
         </div>
       </div>
-      <div class="row">
-        <div label="Templates"><svg viewBox="0 0 29 23"><g><path d="M6.408 7.924v4.125l3.572 2.062 3.572-2.062V7.924L9.98 5.862zM22.838 17.07h-8.895l4.447-7.701z"/><path d="M24.221 3.307l1.139 1.139v14.223l-1.139 1.139H4.498l-1.139-1.139V4.446l1.139-1.139h19.723zm1.138-2.75h-22l-2.75 2.75v16.5l2.75 2.75h22l2.75-2.75v-16.5l-2.75-2.75z"/></g></svg></div>
-        <a title="Stable" href="https://www.chromestatus.com/feature/5207287069147136"></a>
-        <a title="Stable" href="https://www.chromestatus.com/feature/5207287069147136"></a>
-        <a title="Stable" href="https://webkit.org/status/#feature-template-element"></a>
-        <a title="Stable" href="https://platform-status.mozilla.org/#html-templates"></a>
-        <a title="Stable" href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/templateelement/"></a>
-      </div>
-      <div class="row">
-        <div label="Custom elements"><svg viewBox="0 0 26 22"><path d="M6.35 0L0 11l6.35 11h12.702l6.35-11-6.35-11H6.35zm0 11l3.175-5.5h6.352l3.175 5.5-3.175 5.5H9.525L6.35 11z"/></svg></div>
-        <a title="Stable" href="https://www.chromestatus.com/feature/4696261944934400"></a>
-        <a title="Stable" href="https://www.chromestatus.com/feature/4696261944934400"></a>
-        <a title="Stable" href="https://webkit.org/status/#feature-custom-elements"></a>
-        <a href="https://platform-status.mozilla.org/#custom-elements">
-          <div title="Polyfill"></div>
-          <div title="Developing"></div>
-        </a>
-        <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/customelements/">
-          <div title="Polyfill"></div>
-          <div title="Under consideration"></div>
-        </a>
-      </div>
-      <div class="row">
-        <div label="Shadow DOM"><svg viewBox="0 0 26 22"><g><path d="M11.215 8.135h3.14l.883-1.535h-5.06L7.637 11l2.54 4.4h.003l.883-1.536-1.575-2.76z"/><path d="M7.36 20.254l-5.204-9.016 5.408-9.371h10.4L15.24 6.6l2.541 4.4-2.54 4.4h-5.08l-2.802 4.854zM19.05 0H6.35L0 11l6.35 11h12.7l6.352-11L19.05 0z"/></g></svg></div>
-        <a title="Stable" href="https://www.chromestatus.com/feature/4667415417847808"></a>
-        <a title="Stable" href="https://www.chromestatus.com/feature/4667415417847808"></a>
-        <a title="Stable" href="https://webkit.org/status/#feature-shadow-dom"></a>
-        <a href="https://platform-status.mozilla.org/#shadow-dom">
-          <div title="Polyfill"></div>
-          <div title="Developing"></div>
-        </a>
-        <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/shadowdom/">
-          <div title="Polyfill"></div>
-          <div title="Under consideration"></div>
-        </a>
-      </div>
-      <div class="row">
-        <div label="Imports"><svg viewBox="0 0 26 22"><path d="M13.466 0L4 5.466V16.534L13.467 22l9.466-5.466V5.466L13.466 0zM7.569 13.201h3.294V6.133l2.603-1.638h.001l2.603 1.638v7.068h3.294l-5.897 4.578-5.898-4.578z"/></svg></div>
-        <a title="Stable" href="https://www.chromestatus.com/feature/5144752345317376"></a>
-        <a title="Stable" href="https://www.chromestatus.com/feature/5144752345317376"></a>
-        <a href="https://webkit.org/status/#feature-html-imports">
-          <div title="Polyfill"></div>
-          <div title="On hold"></div>
-        </a>
-        <a href="https://platform-status.mozilla.org/#html-imports">
-          <div title="Polyfill"></div>
-          <div title="On hold"></div>
-        </a>
-        <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/htmlimports/">
-          <div title="Polyfill"></div>
-          <div title="Under consideration"></div>
-        </a>
-      </div>
     </div>
-  </template>
+    <div class="row">
+      <div label="Templates"><svg viewBox="0 0 29 23"><g><path d="M6.408 7.924v4.125l3.572 2.062 3.572-2.062V7.924L9.98 5.862zM22.838 17.07h-8.895l4.447-7.701z"/><path d="M24.221 3.307l1.139 1.139v14.223l-1.139 1.139H4.498l-1.139-1.139V4.446l1.139-1.139h19.723zm1.138-2.75h-22l-2.75 2.75v16.5l2.75 2.75h22l2.75-2.75v-16.5l-2.75-2.75z"/></g></svg></div>
+      <a title="Stable" href="https://www.chromestatus.com/feature/5207287069147136"></a>
+      <a title="Stable" href="https://www.chromestatus.com/feature/5207287069147136"></a>
+      <a title="Stable" href="https://webkit.org/status/#feature-template-element"></a>
+      <a title="Stable" href="https://platform-status.mozilla.org/#html-templates"></a>
+      <a title="Stable" href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/templateelement/"></a>
+    </div>
+    <div class="row">
+      <div label="Custom elements"><svg viewBox="0 0 26 22"><path d="M6.35 0L0 11l6.35 11h12.702l6.35-11-6.35-11H6.35zm0 11l3.175-5.5h6.352l3.175 5.5-3.175 5.5H9.525L6.35 11z"/></svg></div>
+      <a title="Stable" href="https://www.chromestatus.com/feature/4696261944934400"></a>
+      <a title="Stable" href="https://www.chromestatus.com/feature/4696261944934400"></a>
+      <a title="Stable" href="https://webkit.org/status/#feature-custom-elements"></a>
+      <a href="https://platform-status.mozilla.org/#custom-elements">
+        <div title="Polyfill"></div>
+        <div title="Developing"></div>
+      </a>
+      <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/customelements/">
+        <div title="Polyfill"></div>
+        <div title="Under consideration"></div>
+      </a>
+    </div>
+    <div class="row">
+      <div label="Shadow DOM"><svg viewBox="0 0 26 22"><g><path d="M11.215 8.135h3.14l.883-1.535h-5.06L7.637 11l2.54 4.4h.003l.883-1.536-1.575-2.76z"/><path d="M7.36 20.254l-5.204-9.016 5.408-9.371h10.4L15.24 6.6l2.541 4.4-2.54 4.4h-5.08l-2.802 4.854zM19.05 0H6.35L0 11l6.35 11h12.7l6.352-11L19.05 0z"/></g></svg></div>
+      <a title="Stable" href="https://www.chromestatus.com/feature/4667415417847808"></a>
+      <a title="Stable" href="https://www.chromestatus.com/feature/4667415417847808"></a>
+      <a title="Stable" href="https://webkit.org/status/#feature-shadow-dom"></a>
+      <a href="https://platform-status.mozilla.org/#shadow-dom">
+        <div title="Polyfill"></div>
+        <div title="Developing"></div>
+      </a>
+      <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/shadowdom/">
+        <div title="Polyfill"></div>
+        <div title="Under consideration"></div>
+      </a>
+    </div>
+    <div class="row">
+      <div label="Imports"><svg viewBox="0 0 26 22"><path d="M13.466 0L4 5.466V16.534L13.467 22l9.466-5.466V5.466L13.466 0zM7.569 13.201h3.294V6.133l2.603-1.638h.001l2.603 1.638v7.068h3.294l-5.897 4.578-5.898-4.578z"/></svg></div>
+      <a title="Stable" href="https://www.chromestatus.com/feature/5144752345317376"></a>
+      <a title="Stable" href="https://www.chromestatus.com/feature/5144752345317376"></a>
+      <a href="https://webkit.org/status/#feature-html-imports">
+        <div title="Polyfill"></div>
+        <div title="On hold"></div>
+      </a>
+      <a href="https://platform-status.mozilla.org/#html-imports">
+        <div title="Polyfill"></div>
+        <div title="On hold"></div>
+      </a>
+      <a href="https://developer.microsoft.com/en-us/microsoft-edge/platform/status/htmlimports/">
+        <div title="Polyfill"></div>
+        <div title="Under consideration"></div>
+      </a>
+    </div>
+  </div>
+</template>
 
-  <script>
-    Polymer({
-      is: 'wc-browser-table',
-    });
-  </script>
-</dom-module>
+<script>
+  (function() {
+    var template = document.currentScript.ownerDocument.querySelector('template#wc-browser-table');
+    var prototype = Object.create(HTMLElement.prototype);
+    prototype.createdCallback = function() {
+      this.createShadowRoot().appendChild(document.importNode(template.content, true));
+    }
+    document.registerElement('wc-browser-table', {prototype: prototype});
+  })();
+</script>
