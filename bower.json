@@ -1,0 +1,13 @@
+{
+  "name": "wc-browser-table",
+  "homepage": "https://github.com/samuelli/wc-browser-table",
+  "authors": [
+    "Sam li <samli@google.com>"
+  ],
+  "description": "",
+  "main": "wc-browser-table.html",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "polymer": "^1.8.1"
+  }
+}
